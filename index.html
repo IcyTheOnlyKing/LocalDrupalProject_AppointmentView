@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Termine Darstellen mit JQUERY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body class="bg-gray-100 font-sans">
+
+<h1 class="text-3xl font-semibold text-center text-gray-800 mt-10">Termine:</h1>
+<br>
+<div id="termine" class="max-w-3xl mx-auto space-y-8 mt-8"></div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost/drupal_demo/web/api/Termine',
+            method: 'GET',
+            dataType: 'json',
+
+            success: function (data) {
+                data.forEach(function (event) {
+                    $('#termine').append(`
+                        <div class="termin p-6 bg-white shadow-md rounded-lg border border-gray-200"> <!-- Von Tailwind CSS -->
+                            <h2 class="text-2xl font-bold text-blue-600">${event.title}</h2>
+                            <p class="mt-2"><strong>Beschreibung:</strong> ${event.body}</p>
+                            <p class="mt-2"><strong>Startdatum:</strong> ${event.field_startdatum}</p>
+                            <p class="mt-2"><strong>Enddatum:</strong> ${event.field_enddatum}</p>
+                            <p class="mt-2"><strong>Bild:</strong> ${event.field_terminbild}</p>
+                        </div>
+                    `);
+                });
+            },
+
+            error: function () {
+                $('#termine').html('<p class="text-red-500">Es gab ein Problem beim Laden der Daten.</p>');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
